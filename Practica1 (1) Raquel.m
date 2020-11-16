@@ -1,0 +1,219 @@
+% % Peña Alarcón Raquel
+% % Práctica 1 
+% % Analisis Numérico
+
+
+% %Ej. 1
+format long
+for i=1:10      %%Ciclo for que recorre del 1 a 10
+x1= sqrt(2*pi*i)*(i/exp(1))^i; %%Valor Aproximado. Fórmula de Stirling
+x=factorial(i);           %%Valor Verdadero 
+ErrAbs= abs(x1-x);        %%Error Absoluto
+ErrRel= ErrAbs/x;         %%Error Relativo
+fprintf('Para %d\n Factorial: %d\n Aprox. de Stirling: %f\n Error Absoluto: %f\n Error Relativo: %f\n',i,x,x1,ErrAbs,ErrRel)
+end
+
+
+
+% %Ej. 2
+
+x=1:1:20;
+e=exp(1);
+a=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+b=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+z=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+y=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+
+for n=1:20
+    z(n)= 10. ^x(n);
+    y(n)=((1+1/z(n)).^z(n)) %%Mediante la aproximación del límite
+    ErrorAbs =abs(e-y(n));
+    ErrorRel= abs(e-y(n))/abs(e);
+    
+    a(n)=ErrorRel
+    b(n)=ErrorAbs
+    %plot(x,a,'k+','LineWidth',5)
+    %axis([0 20 0 1])
+    %plot(x,b,'r+','LineWidth',5)
+    %axis([0 10 0 100])
+end
+
+
+
+
+% %Ej. 3
+
+a=0;    
+b=1;    
+
+%% Método 1, n=5.
+
+n=5;
+h=(b-a)/n;
+
+x0=a;    
+xk=x0;   
+
+for i=0:n
+fprintf('Para %d\n Punto: %1.17f\n',i,xk)
+i=i+1;
+xk=xk+h; %%Método Recursivo
+end
+
+%% Método 2,  n=5.
+
+n=5;
+h=(b-a)/n;
+
+for i=0:n
+
+xk=a+i*h;
+fprintf('Para %d\n Punto: %1.17f\n',i,xk)
+
+end
+
+
+%% Método 1, n=50000.
+
+n=50000;
+h=(b-a)/n;
+
+x0=a;    
+xk=x0;   
+
+for i=0:n
+
+fprintf('Para %d\n Punto: %1.17f\n',i,xk)
+i=i+1;
+xk=xk+h; %%Metodo Recursivo
+
+end
+
+%% Método 2, n=50000.
+
+n=50000;
+h=(b-a)/n;
+
+for i=0:n
+
+xk=a+i*h;
+fprintf('Para %d\n Punto: %1.17f\n',i,xk)
+
+end
+
+
+
+
+
+% %Ej. 4
+
+% Precisión simple.
+
+n=single(1);
+x=single(0);
+
+while x+(1/n)>x
+n;
+x=single(single(x)+single(single(1)/single(n)));
+
+fprintf('Para %d\n Suma Parcial: %f\n',n,x)
+
+n=n+1;
+end
+
+
+% Precisión doble.
+n=1;
+x=0;
+
+while x+(1/n)>x
+n;
+x=x+(1/n);
+
+fprintf('Para %d\n Suma Parcial: %f\n',n,x)
+
+n=n+1;
+end
+
+
+
+
+% %Ej. 5
+
+% Función con equiespaciamiento de 10^-13.
+x=[10^-13:10^-13:10^-12];      
+y=((1+x)-1)./x;              
+plot(x,y)     %%Gráfica                 
+
+
+
+
+
+% %Ej. 6
+
+% Formato doble:
+
+x0=11/2;
+x1=61/11;
+fprintf('Para 1: %1.17f\n',x0)
+fprintf('Para 2: %1.17f\n',x1)
+
+n=3;
+
+while n<21
+x=111-((1130-(3000/x0))/x1);
+x0=x1;
+x1=x;
+
+fprintf('Para %d= %1.17f\n',n,x)
+
+n=n+1;
+end
+
+% Formato simple:
+
+x0=single(single(11)/single(2));
+x2=single(single(61)/single(11));
+fprintf('Para 1: %1.17f\n',x1)
+fprintf('Para 2: %1.17f\n',x2)
+
+n=3;
+
+while n<11
+
+x=single(single(111)-single(single(single(1130)-single(single(3000)/single(x0)))/single(x1)));
+
+x0=single(x1);
+x1=single(x);
+
+fprintf('Para %d= %1.17f\n',n,x)
+n=n+1;
+
+end
+
+
+
+
+% %Ej. 7
+
+function[e]=FuncionExponencial(x)
+e=1;
+
+aux=1+x;
+i=1;
+if x>0
+    while aux>e
+    e=e+((x^i)/factorial(i));
+    aux=aux + ((x^(i+1))/(factorial(i+1)));
+    i=i+1;
+    end
+end
+
+if x<0
+    e= 1/(FuncionExponencial(-x));
+end
+fprintf('Para %f: e^%f= %1.17f\n',x,x,e)
+endfunction
+
+FuncionExponencial(1)
+
